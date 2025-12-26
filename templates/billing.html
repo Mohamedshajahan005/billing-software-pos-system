@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="receipt-header">
+    <h1>INDIAN MALIGAI</h1>
+    <p class="shop-address">
+        No.54, Bazar Street,<br>
+        Uthiramerur
+    </p>
+
+    <p class="bill-info">
+        Bill No: {{ bill_no }} <br>
+        Date: {{ bill_date }}
+    </p>
+    <hr>
+</div>
+
+<h2>Billing</h2>
+
+<form method="post">
+<table border="1" id="billTable">
+    <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Unit</th>
+        <th>Price</th>
+    </tr>
+
+    <tr>
+        <td>
+            <input type="text" name="item[]" list="productList"
+                   oninput="autoFill(this)" required>
+        </td>
+
+        <td>
+            <input type="number" name="quantity[]" required>
+        </td>
+
+        <td>
+            <select name="unit[]">
+                <option value="kg">kg</option>
+                <option value="g">g</option>
+                <option value="pcs">pcs</option>
+            </select>
+        </td>
+
+        <td>
+            <input type="number" name="price[]" readonly>
+        </td>
+    </tr>
+</table>
+
+<br>
+<button type="button" onclick="addRow()">➕ Add Item</button>
+<br><br>
+
+<button type="submit">Generate Bill</button>
+</form>
+
+<!-- PRODUCT AUTOCOMPLETE -->
+<datalist id="productList">
+    {% for p in products %}
+        <option value="{{ p.name }}"
+                data-price="{{ p.selling_price }}"
+                data-unit="{{ p.unit }}">
+        </option>
+    {% endfor %}
+</datalist>
+
+{% if bill %}
+<h3>Bill Summary</h3>
+<table border="1">
+<tr>
+    <th>Item</th>
+    <th>Qty</th>
+    <th>Price</th>
+    <th>Total</th>
+</tr>
+
+{% for i in bill %}
+<tr>
+    <td>{{ i.item }}</td>
+    <td>{{ i.quantity }} {{ i.unit }}</td>
+    <td>{{ i.price }}</td>
+    <td>{{ i.total }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h3>Grand Total: ₹{{ grand_total }}</h3>
+{% endif %}
+
+<script>
+function addRow() {
+    let table = document.getElementById("billTable");
+    let row = table.insertRow();
+
+    row.innerHTML = `
+        <td>
+            <input type="text" name="item[]" list="productList"
+                   oninput="autoFill(this)" required>
+        </td>
+        <td><input type="number" name="quantity[]"
+
+
