@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h2>Product Master</h2>
+
+<a href="/add-product">➕ Add New Product</a>
+<br><br>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>MRP</th>
+        <th>Selling Price</th>
+        <th>Unit</th>
+    </tr>
+
+    {% for p in products %}
+    <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>{{ p.mrp }}</td>
+        <td>{{ p.selling_price }}</td>
+        <td>{{ p.unit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/billing">⬅ Back to Billing</a>
+
+</body>
+</html>
